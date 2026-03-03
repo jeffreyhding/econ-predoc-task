@@ -36,8 +36,7 @@ Eligibility for FLI is determined at the **household level** and depends on (i) 
 Evaluate whether the introduction of New Jersey’s FLI program in 2009 improved the economic well-being of households most likely to be affected. New Jersey shares a labor market and economic environment with neighboring Pennsylvania within the Philadelphia Metropolitan Area, yet Pennsylvania did not implement a paid family leave policy during this period.
 
 **Data:**
-Individual-level cross-sectional American Community Survey (ACS) 1-Year PUMS data (via [IPUMS USA](https://usa.ipums.org/usa/)) for households in the Philadelphia Metropolitan Area from 2006–2012. A codebook describing all variables is included. Because the ACS is collected annually, variable definitions and coding may change
-over time.
+Individual-level cross-sectional American Community Survey (ACS) 1-Year PUMS data (via [IPUMS USA](https://usa.ipums.org/usa/)) for households in the Philadelphia Metropolitan Area from 2006–2012. A codebook describing all variables is included. Because the ACS is collected annually, variable definitions and coding may change over time.
 
 
 

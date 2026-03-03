@@ -1,5 +1,5 @@
 # Predoc Data Task
-This assessment consisted of two analysis tasks:
+This repository contains files made/used for a preliminary data task for the Taubinsky-Butera-Lockwood Economics Predoc Research position. This assessment consisted of two main analysis tasks:
 
 ## 1. Paid Family Leave
 

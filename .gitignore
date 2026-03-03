@@ -1,0 +1,25 @@
+# Ignore everything by default
+*
+
+# Keep this gitignore file itself
+!.gitignore
+
+# Keep required files
+!data_task.pdf
+!JeffreyDing_Predoc_Data_Task.qmd
+!JeffreyDing_Predoc_Data_Task.pdf
+!2_Sankey_Diagram.qmd
+!2_Sankey_Diagram.html
+!sankey_pa_budget.png
+
+# Keep the data folder and everything inside it
+!data/
+!data/**
+
+# Ignore Quarto/R markdown render artifacts and caches
+*_files/
+*_cache/
+.quarto/
+
+# macOS
+.DS_Store

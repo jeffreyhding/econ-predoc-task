@@ -1,0 +1,132 @@
+---
+title: Sankey Diagram
+author: Jeffrey Ding
+date: 3-2-2026
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+### Run this file first to generate sankey_pa_budget.png, which is loaded by the main QMD via knitr::include_graphics().
+
+```{r}
+#| label: fig-sankey
+#| fig-cap: "Pennsylvania General Fund FY 2024–25: Revenue Sources and Expenditure Categories (USD). Revenue data from the Seven Year Financial Statement (p. 29); expenditure data from the Department Funding Summary (p. 28), General Fund column. Pennsylvania Governor's Executive Budget 2024–25."
+
+library(plotly)
+library(htmlwidgets)
+library(webshot2)
+
+# Nodes / Categories
+# 0–3: revenue sources
+# 4: central connector node
+# 5–13: expenditure categories
+node_labels <- c(
+    "Personal Income & Other Taxes<br>$21,306M",      # 0
+    "Sales, Use & Consumption Taxes<br>$15,652M",     # 1
+    "Corporation Taxes<br>$8,026M",                   # 2
+    "Nontax Revenue, Balance & Other<br>$3,354M",     # 3
+    "PA General Fund\nFY 2024\u201325",               # 4
+    "K\u201312 Education<br>$19,104M",                # 5
+    "Human Services<br>$19,270M",                     # 6
+    "Corrections<br>$3,224M",                         # 7
+    "State Police & Public Safety<br>$1,607M",        # 8
+    "Government & Administration<br>$2,064M",         # 9
+    "Health, Agriculture & Environment<br>$1,092M",   # 10
+    "Economic Development & Workforce<br>$673M",      # 11
+    "Higher Education (PHEAA)<br>$476M",              # 12
+    "Judiciary & Legislature<br>$828M"                # 13
+)
+
+node_amounts <- c(
+    "$21,306M", "$15,652M", "$8,026M", "$3,354M",
+    "Total: $48,338M",
+    "$19,104M", "$19,270M", "$3,224M", "$1,607M",
+    "$2,064M", "$1,092M", "$673M", "$476M", "$828M"
+)
+
+sources <- c(0, 1, 2, 3,   4, 4, 4, 4, 4, 4,  4,  4,  4)
+targets <- c(4, 4, 4, 4,   5, 6, 7, 8, 9, 10, 11, 12, 13)
+values  <- c(21306, 15652, 8026, 3354,
+             19104, 19270, 3224, 1607, 2064, 1092, 673, 476, 828)
+
+fig_sankey <- plot_ly(
+    type = "sankey",
+    orientation = "h",
+
+    node = list(
+        pad       = 18,
+        thickness = 22,
+        line      = list(color = "white", width = 0.5),
+        label     = node_labels,
+        customdata = node_amounts,
+        hovertemplate = "<b>%{label}</b><br>%{customdata}<extra></extra>",
+        color = c(
+        "#1d4e89",  # Other Taxes        — dark blue
+        "#2166ac",  # Consumption Taxes  — medium blue
+        "#4393c3",  # Corporation Taxes  — lighter blue
+        "#92c5de",  # Nontax & Other     — lightest blue
+        "#525252",  # Central node       — charcoal
+        "#1a9850",  # K-12 Ed            — dark green
+        "#66bd63",  # Human Services     — medium green
+        "#d73027",  # Corrections        — red
+        "#f46d43",  # State Police       — orange-red
+        "#878787",  # General Govt       — mid-grey
+        "#4393c3",  # Health/Agric/Env   — blue
+        "#fee090",  # Econ Dev           — yellow
+        "#4dac26",  # Higher Ed          — green
+        "#9970ab"   # Judiciary & Leg    — purple
+        )
+    ),
+
+    link = list(
+        source = sources,
+        target = targets,
+        value  = values,
+        label  = paste0(
+        node_labels[targets + 1], ": ",   # +1 for R's 1-indexing
+        c("$21,306M", "$15,652M", "$8,026M", "$3,354M",
+            "$19,104M", "$19,270M", "$3,224M", "$1,607M",
+            "$2,064M", "$1,092M", "$673M", "$476M", "$828M")
+        ),
+        hovertemplate = "%{label}<extra></extra>",
+        color = "rgba(120,120,120,0.8)"
+    )
+    ) |>
+    layout(
+        title = list(
+        text = paste0(
+            "<b>Pennsylvania General Fund FY 2024\u201325</b>  ",
+            "<span style='font-size:12px'>Revenue Sources and Expenditure Categories (USD)</span>"
+        ),
+        font = list(size = 14), x = 0.5
+        ),
+        annotations = list(
+        list(
+            x = 0.01, y = 1.12, xref = "paper", yref = "paper",
+            text = "<b>Receipts by Source</b><br>Total: $48,338M",
+            showarrow = FALSE, font = list(size = 11), xanchor = "left"
+        ),
+        list(
+            x = 0.99, y = 1.12, xref = "paper", yref = "paper",
+            text = "<b>Outlays by Function</b><br>Total: $48,338M",
+            showarrow = FALSE, font = list(size = 11), xanchor = "right"
+        )
+        ),
+        font  = list(size = 11, family = "Arial"),
+        height = 650,
+        width  = 1050,
+        paper_bgcolor = "white",
+        plot_bgcolor  = "white",
+        margin = list(t = 100, b = 20, l = 20, r = 20)
+    )
+
+# ── Export ──────────────────────────────────────────────────────────────────────
+saveWidget(fig_sankey, "sankey_temp.html", selfcontained = TRUE)
+webshot("sankey_temp.html", "sankey_pa_budget.png",
+        vwidth = 1100, vheight = 700, zoom = 2)
+
+# fig_sankey
+```
